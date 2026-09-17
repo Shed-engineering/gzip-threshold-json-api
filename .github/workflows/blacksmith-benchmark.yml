@@ -22,7 +22,7 @@ jobs:
           kill $SERVER_PID
 
   blacksmith:
-    runs-on: blacksmith-4vcpu-ubuntu-2204
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     steps:
       - uses: actions/checkout@v4
       - name: Run measurement suite
