@@ -1,0 +1,39 @@
+name: blacksmith-benchmark
+
+on:
+  workflow_dispatch:
+
+jobs:
+  github-hosted:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run measurement suite
+        run: |
+          node server.js &
+          SERVER_PID=$!
+          sleep 1
+          echo "::group::client.js (main sweep)"
+          time node client.js
+          echo "::endgroup::"
+          echo "::group::crossover.js (fine sweep)"
+          time node crossover.js
+          echo "::endgroup::"
+          kill $SERVER_PID
+
+  blacksmith:
+    runs-on: blacksmith-4vcpu-ubuntu-2204
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run measurement suite
+        run: |
+          node server.js &
+          SERVER_PID=$!
+          sleep 1
+          echo "::group::client.js (main sweep)"
+          time node client.js
+          echo "::endgroup::"
+          echo "::group::crossover.js (fine sweep)"
+          time node crossover.js
+          echo "::endgroup::"
+          kill $SERVER_PID
